@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlashLearn</title>
+    <link rel="stylesheet" href="{% static 'css/flashcards.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="content">
+        <form method="post" class="form-container">
+            {% csrf_token %}
+            <input type="text" name="text" placeholder="Enter the paragraph you want to summarize" class="text-input">
+            <button type="submit">Generate</button>
+        </form>
+
+        {% if summary %}
+            <button id="toggle-summary">Show Summary</button>
+            <div id="summary-section" class="summary" style="display: none;">
+                <h2>Summary</h2>
+                <div class="summary-container">
+                    <p>{{ summary }}</p>
+                </div>
+            </div>
+
+            <h3>Flashcards:</h3>
+            <div class="flashcard-container">
+                {% for question, answer in qa_pairs %}
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p>{{ question }}</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p>{{ answer }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById('toggle-summary').addEventListener('click', function() {
+            var summarySection = document.getElementById('summary-section');
+            if (summarySection.style.display === 'none') {
+                summarySection.style.display = 'block';
+                this.textContent = 'Hide Summary';
+            } else {
+                summarySection.style.display = 'none';
+                this.textContent = 'Show Summary';
+            }
+        });
+    </script>
+</body>
+</html>

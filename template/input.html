@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlashLearn</title>
+    <link rel="stylesheet" href="{% static 'css/input.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="content">
+        <form method="post" class="form-container">
+            {% csrf_token %}
+            <input type="text" name="text" placeholder="Enter the paragraph you want to summarize" class="text-input">
+            <button type="submit">Generate</button>
+        </form>
+
+        {% if summary %}
+            <h3>Generated Summary:</h3>
+            <p>{{ summary }}</p>
+
+            <h3>Flashcards:</h3>
+            <div id="flashcards">
+                {% for question, answer in qa_pairs %}
+                    <div class="flashcard">
+                        <div class="question">{{ question }}</div>
+                        <div class="answer">{{ answer }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        document.querySelectorAll('.flashcard').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
