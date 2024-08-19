@@ -1,0 +1,20 @@
+{
+    "builds": [{
+        "src": "flashlearn/wsgi.py",
+        "use": "@vercel/python",
+        "config": { "maxLambdaSize": "15mb","runtime": "python3.9" }
+    }],
+    "routes": [{
+        "src": "/static/(.*)",
+        "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
+        "dest": "/static/$1"
+    }, {
+        "src": "/assets/(.*)",
+        "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
+        "dest": "/media/$1"
+    }, {
+        "src": "/(.*)",
+        "dest": "/flashlearn/wsgi.py"
+    }
+]
+}
